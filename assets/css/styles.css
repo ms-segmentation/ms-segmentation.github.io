@@ -41,7 +41,7 @@ a.btn{
 hr{
 	width: 150px;
 	height: 2px;
-	background-color: #2196F3;
+	background-color: #285430;
 	border: 0;
 	margin-bottom: 80px;
 }
@@ -404,7 +404,7 @@ header nav li:last-child{
 
 .features .grid li i{
     font-size: 50px;
-    color: #2196F3;
+    color: #285430;
     margin-bottom: 25px;
 }
 
@@ -587,14 +587,23 @@ footer p a{
 	text-align: center;
 }
 
+.upstream .bg-container {
+	width:100%;
+  }
+
 .upstream .background-image{
 	position: flex;
 	justify-content: center;
-	width: 200vh;
-	height: 100vh;
+	background: no-repeat center center cover;
 	background-size: cover;
+	max-width: 110%;
+	max-height: 110%;
+	min-width: 100%;
+	min-height: 100%;
 	/* background-color: #2196F3; */
 	z-index: -1;
+	margin-left:20px;
+	margin-right: 20px;
 	margin-bottom: 80px;
 }
 
