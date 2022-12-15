@@ -5,7 +5,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
 	<title>Label-Conditional Synthetic Satellite Imagery</title>
 
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -13,7 +12,7 @@
 	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/css/styles.css">
 	<link rel="stylesheet" href="assets/css/table_styles.css">
-	</head>
+</head>
 
 <body>
 
@@ -53,7 +52,6 @@
 			high-resolution satellite images to the public. In contrast, synthetic satellite imagery can be abundant,
 			low-cost, and high-quality at the same time. </p>
 		<hr>
-
 		<div class="background-image" style="background-image: url(assets/img/MLForGood.png);"></div>
 		<br>
 		<br>
@@ -108,7 +106,7 @@
 		<p>We adapt conditional GAN with SPADE to the synthetic satellite imagery task and optimize it to generate
 			better images, prepare different datasets for training the downstream models, and evaluate the performances
 			of the downstream segmentation models trained on different datasets.</p>
-		<div class="background-image" style="background-image: url(assets/img/model.png);"></div>
+			<img class="background-image" src="assets/img/model.png">
 
 		<a href="https://github.com/Neverland-2022/SPADE" class="btn">Go to Github</a>
 		<br>
@@ -148,7 +146,8 @@
 		</p>
 		<p> We use U-Net as the downstream segmentation model, and train each for 5 epochs with a learning rate of 1e-5.
 		</p>
-		<div class="background-image" style="background-image: url(assets/img/downstream.png);"></div>
+
+		<img class="background-image" src="assets/img/downstream.png">
 
 		<h3 class="title" style="margin-bottom:60px"> Results for Landcover Segmentation</h3>
 		<h4> DICE Score</h4>
@@ -314,15 +313,15 @@
 		</div>
 
 		<div id='mySwipe' style='max-width:1000px;margin:0 auto' class='swipe'>
-			
-		  </div>
-		  <div style='text-align:center;padding-top:20px;'>
-  
-			<button class="prev" onclick='mySwipe.prev()'></button> 
+
+		</div>
+		<div style='text-align:center;padding-top:20px;'>
+
+			<button class="prev" onclick='mySwipe.prev()'></button>
 			<button class="next" onclick='mySwipe.next()'></button>
-		  
-		  </div>
-		  
+
+		</div>
+
 	</section>
 
 	<section class="reviews">
@@ -346,6 +345,9 @@
 		<p> SM Student in Applied Computation </p>
 		<a href="shihanlin@g.harvard.edu">shihanlin@g.harvard.edu</a>
 
+		<p class="author"> Robert Roessler</p>
+		<p> PhD Student in Harvard German Department </p>
+		<a href="shihanlin@g.harvard.edu">shihanlin@g.harvard.edu</a>
 	</section>
 
 
@@ -599,8 +601,8 @@
 
 		// with jQuery
 		// window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
-		
-		</script>
+
+	</script>
 </body>
 
 </html>
