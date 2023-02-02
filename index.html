@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<title>Label-Conditional Synthetic Satellite Imagery</title>
 
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
@@ -18,7 +18,7 @@
 <body>
 
 	<header>
-		<h2><a href="#">TEAM SATELLITE</a></h2>
+		<!-- <h2><a href="#">TEAM SATELLITE</a></h2> -->
 		<!-- <nav>
 			<li><a href="#">Home</a></li>
 			<li><a href="#">Products</a></li>
@@ -32,7 +32,8 @@
 		<div class="background-image" style="background-image: url(assets/img/background.jpg);"></div>
 		<h1>Label-Conditional Synthetic Satellite Imagery</h1>
 		<h3>Project from Microsoft AI For Good Lab</h3>
-		<a href="https://github.com/ms-synthetic-satellite-image/synthetic-satellite-imagery" class="btn">Go to Github</a>
+		<a href="https://github.com/ms-synthetic-satellite-image/synthetic-satellite-imagery" class="btn">Go to
+			Github</a>
 		<div class="div-header" onclick="document.getElementById('content').scrollIntoView();"></div>
 	</section>
 
@@ -59,26 +60,42 @@
 		<br>
 		<br>
 		<h3 class="title">Our Solution</h3>
-		<p>We are interested in methods that generate
-			photo-realistic satellite images that can be used for different downstream tasks that would ultimately
-			benefit the social good.
-		</p>
+		<p>We propose a label-conditional synthetic image generation model for creating synthetic satellite imagery
+			datasets. </p>
+		<p>Given a dataset of real high-resolution imagery and accompanying land cover masks, we show that it is
+			possible to train an upstream class-conditional synthetic imagery generator, use that generator to create a
+			synthetic imagery using the land cover masks, then train a downstream model on the synthetic imagery and
+			land cover masks that achieves similar test set performance to a model that was trained with the real
+			imagery.</p>
+		<p>Further, we find that incorporating a mixture of real and synthetic imagery acts as a data augmentation
+			method, producing better models than using only real imagery.</p>
 		<hr>
 	</section>
 
 	<section class="features">
 		<h3 class="title">Features and experiments</h3>
-		<p>Explore features of our project and experiments we did.</p>
-		<hr>
-
+		<p>Our basic pipeline consists of an upstream task, synthetic data generation, and a downstream task,
+			testing the usability of the synthetic data. In general, this could be any machine learning models or
+			tasks that use satellite images. In this work, we choose segmentation as our main downstream task.</p>
+		<br>
+		<br>
+		<br>
+		<br>
+		<img class="background-image" src="assets/img/pipeline.drawio.png" style="border-radius:5ex">
+		<br>
+		<br>
+		<br>
+		<br>
 		<ul class="grid">
 			<li>
 				<i class="fa fa-camera-retro"></i>
 				<h4><a href="#upstream">Satellite Imagery Generation </a></h4>
 				<!-- TODO: Add dashboard page -->
 				<div class="content">
-					<p> We adapt a specific conditional generative adversarial model with spatially-adaptive
-						normalization developed by SPADE to the study.</p>
+					<p> We adapt a conditional GAN model with spatially-adaptive
+						normalization (<a href="https://github.com/NVlabs/SPADE.git">SPADE</a>) to overcome the lack of
+						diversity from the synthetic
+						output.</p>
 				</div>
 			</li>
 			<li>
@@ -86,16 +103,9 @@
 				<h4><a href="#downstream">Synthetic Imagery for Landcover Segmentation</a></h4>
 				<!-- TODO: Add dashboard page -->
 				<div class="content">
-					<p> Synthetic satellite images as <b>substitute</b> for real datasets to build comparable models.
+					<p> Synthetic satellite images as <b>substitute</b> or <b>augmentation</b> for real datasets to
+						build comparable models.
 					</p>
-				</div>
-			</li>
-			<li>
-				<i class="fa fa-copy"></i>
-				<h4> <a href="#downstream">Synthetic Imagery for Building Segmentation</a></h4>
-				<!-- TODO: Add dashboard page -->
-				<div class="content">
-					<p> Synthetic satellite images as <b>augmentation</b> for real datasets to build better models.</p>
 				</div>
 			</li>
 			</div>
@@ -107,134 +117,119 @@
 		<p>We adapt conditional GAN with SPADE to the synthetic satellite imagery task and optimize it to generate
 			better images, prepare different datasets for training the downstream models, and evaluate the performances
 			of the downstream segmentation models trained on different datasets.</p>
-			<img class="background-image" src="assets/img/model.png">
+		<img class="background-image" src="assets/img/model.png">
 
-		<a href="https://github.com/ms-synthetic-satellite-image/synthetic-satellite-imagery/tree/main/generate_synthetic" class="btn">Go to Github</a>
+		<a href="https://github.com/ms-synthetic-satellite-image/synthetic-satellite-imagery/tree/main/generate_synthetic"
+			class="btn">Go to Github</a>
 		<br>
 		<br>
 		<br>
 		<br>
-		<p>The SPADE model was originally developed for 3-channel images, and as we aim to create images with an extra
-			alpha channel other than the RGB channels, we make a few modifications to the model structure.</p>
-		<p> Specifically, we change (1) the number of output channels of the last convolution layer in the generator to
-			be 4 and (2)
-			the number of input channels of the first convolution layer in the VGG architecture, which is used to
-			compute the perceptual loss of the generated images, to be 4, and (3)
-			adapt normalization to all 4 channels in the input images.
-			</il>
-
-
-		<p>Moreover, the size of the images is 5000 * 6000, while we plan to train on and generate much smaller 256 *
-			256 patches. To allow for better exploitation of the information from the training data, we implement data
-			enlargement: before training, each image and its respective label mask are read multiple times and flipped
-			in the same way, and for each copy, a random patch of the image and its respective patch in the label map
-			are cropped out. In this way, multiple different patches are cropped out from each image and from each label
-			map for training the SPADE model.
+		<!-- TODO: Modify -->
+		<p>We trained SPADE
+			using real 3-channel VHR satellite imagery, land cover and building segmentation masks as inputs.
+			Since the baseline model tends to produce almost identical synthetic images given the same masks,
+			we include in training an additional loss term to increase output
+			diversity.
 		</p>
-		<p>Final model used for synthetic satellite image generation does 50-times data enlargement, and thus is trained
-			on 5000 256 * 256 patches cropped from the 100 training images. No resizing is done on the original images
-			so that more high-frequency details can be preserved. It uses Xavier initialization for the parameters, and
-			is trained with a batch size of 16 for 10 epochs, with a learning rate of 0.0002. The generated synthetic
-			images also have a size of 256 * 256.</p>
+		<p>Our results suggest that increasing diversity leads to more photo-realistic synthetic images
+			and better downstream performance in segmentation. Synthetic satellite images are generated at
+			different levels of diversity for our downstream experiments (please refer to our paper for more details).
+		</p>
+
+		<img class="background-image" src="assets/img/examples.png"
+			style="max-width:60%;min-width: 10%;min-height: 10%;height:auto">
+
+		<p>Above, each row shows three examples of synthetic images generated from random latent representations for a
+			given class mask from the model. The “real imagery” is shown for reference but is not used at
+			inference time.</p>
 		</p>
 	</section>
 
 
 	<section class="upstream" id="downstream">
 		<h3 class="title">Downstream Tasks</h3>
-		<p>In the downstream experiments, we train a segmentation model for each of the datasets created from upstream
-			generation, and for each model, we predict segmentation masks on each of real satellite images.
+		<p>To test whether our synthetic satellite imagery could be effective data augmentation, we design a
+			series of experiments based on the multi-label landcover segmentation task, where a downstream
+			model classifies an image’s pixels into 6 different land cover labels.
 		</p>
-		<p> We use U-Net as the downstream segmentation model, and train each for 5 epochs with a learning rate of 1e-5.
-		</p>
-
 		<img class="background-image" src="assets/img/downstream.png">
-
-		<h3 class="title" style="margin-bottom:60px"> Results for Landcover Segmentation</h3>
-		<h4> DICE Score</h4>
 		<hr>
+		<p> We first explore the segmentation performance of models trained with synthetic imagery with different
+			degrees of diversity, as generated with different lambda diversities.
+		</p>
 		<div class="table-wrap">
 			<!-- TODO: update results table -->
 			<table class="table table-light table-hover table-responsive table-condensed">
 				<thead>
 					<tr>
-						<th title="Field #1">Training</th>
-						<th title="Field #2">Water</th>
-						<th title="Field #3">Forest</th>
-						<th title="Field #4">Low Vegetation</th>
-						<th title="Field #5">Barren Land</th>
-						<th title="Field #6">Impervious (other)</th>
-						<th title="Field #7">Impervious (road)</th>
-						<th title="Field #8">Overall</th>
+						<th title="Field #1">lambda</th>
+						<th title="Field #2">mIoU</th>
+						<th title="Field #3">FID (1)</th>
+						<th title="Field #4">FID (2)</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>1000 images, mix rate 0%</td>
-						<td align="right">0.983</td>
-						<td align="right">0.854</td>
-						<td align="right">0.798</td>
-						<td align="right">0</td>
-						<td align="right">0.467</td>
-						<td align="right">0</td>
-						<td align="right">0.517</td>
+						<td>0</td>
+						<td align="right">0.2894</td>
+						<td align="right">72.29</td>
+						<td align="right">73.31</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 25%</td>
-						<td align="right">0.986</td>
-						<td align="right">0.779</td>
-						<td align="right">0.721</td>
-						<td align="right">0</td>
-						<td align="right">0.486</td>
-						<td align="right">0.003</td>
-						<td align="right">0.496</td>
+						<td>2</td>
+						<td align="right">0.3417</td>
+						<td align="right">63.07</td>
+						<td align="right">70.72</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 50%</td>
-						<td align="right">0.978</td>
-						<td align="right">0.824</td>
-						<td align="right">0.729</td>
-						<td align="right">0</td>
-						<td align="right">0.423</td>
-						<td align="right">0</td>
-						<td align="right">0.492</td>
+						<td>4</td>
+						<td align="right">0.3827</td>
+						<td align="right">61.70</td>
+						<td align="right"><b>61.38</b></td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 75%</td>
-						<td align="right">0.984</td>
-						<td align="right">0.73</td>
-						<td align="right">0.704</td>
-						<td align="right">0</td>
-						<td align="right">0.472</td>
-						<td align="right">0.02</td>
-						<td align="right">0.485</td>
+						<td>6</td>
+						<td align="right"><b>0.4059</b></td>
+						<td align="right"><b>56.60</b></td>
+						<td align="right">70.98</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 100%</td>
-						<td align="right">0.974</td>
-						<td align="right">0.624</td>
-						<td align="right">0.611</td>
-						<td align="right">0</td>
-						<td align="right">0.32</td>
-						<td align="right">0.104</td>
-						<td align="right">0.439</td>
+						<td>8</td>
+						<td align="right">0.3572</td>
+						<td align="right">58.09</td>
+						<td align="right">63.46</td>
 					</tr>
 					<tr>
-						<td>2000 images, mix rate 200%</td>
-						<td align="right">0.947</td>
-						<td align="right">0.639</td>
-						<td align="right">0.632</td>
-						<td align="right">0.023</td>
-						<td align="right">0.266</td>
-						<td align="right">0.311</td>
-						<td align="right">0.47</td>
+						<td>10</td>
+						<td align="right">0.3234</td>
+						<td align="right">60.48</td>
+						<td align="right">56.37</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<br><br><br><br><br><br><br><br><br>
-		<h4> IOU Score</h4>
+
+		<p>mIoU reflects the downstream model performance trained on generated images with diversity lambda. FID (1) is
+			calculated with synthetic
+			test images generated without using the trained
+			encoder. FID (2) is calculated with synthetic test images generated using the trained encoder. </p>
+		<p>Synthetic tiles
+			generated with lambda = 6 results in the highest mIoU scores of 0.4059. We use this diversity parameter
+			value to generate synthetic tiles for most of the following experiments for consistently better
+			performance.</p>
 		<hr>
+		<p>To evaluate the usability of the synthetic images with respect to the real ones, we trained four downstream
+			segmentation models on the
+			following datasets: 100% real, which contains 100 real satellite image tiles in a 3-channel RGB version;
+			100% syn, 200% syn, 300% syn, which contains 100, 200, 300 synthetic RGB tiles respectively (we generate
+			3 different synthetic versions for each real tile by changing the input random setting during upstream
+			generation). All synthetic tiles are generated with the upstream model using lambda=6, and the downstream
+			model randomly crops out patches from real and synthetic tiles for training.</p>
+			<p>The mIoU metric below shows that training on only and more synthetic imagery
+				does not improve segmentation performance, and specifically, the performance on the water class
+				drops significantly. </p>
+
 		<div class="table-wrap">
 			<table class="table table-light table-hover table-responsive table-condensed">
 				<thead>
@@ -246,111 +241,121 @@
 						<th title="Field #5">Barren Land</th>
 						<th title="Field #6">Impervious (other)</th>
 						<th title="Field #7">Impervious (road)</th>
-						<th title="Field #8">Overall</th>
+						<th title="Field #8">Mean</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>1000 images, mix rate 0%</td>
-						<td align="right">0.966</td>
-						<td align="right">0.745</td>
-						<td align="right">0.664</td>
-						<td align="right">0</td>
-						<td align="right">0.304</td>
-						<td align="right">0</td>
-						<td align="right">0.447</td>
+						<td>100% real</td>
+						<td align="right">0.6794</td>
+						<td align="right">0.8386</td>
+						<td align="right">0.7279</td>
+						<td align="right">0.1205</td>
+						<td align="right">0.5302</td>
+						<td align="right">0.2443</td>
+						<td align="right">0.5235</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 25%</td>
-						<td align="right">0.973</td>
-						<td align="right">0.638</td>
-						<td align="right">0.563</td>
-						<td align="right">0</td>
-						<td align="right">0.321</td>
-						<td align="right">0.002</td>
-						<td align="right">0.416</td>
+						<td>100% synthetic</td>
+						<td align="right">0.4001</td>
+						<td align="right">0.7332</td>
+						<td align="right">0.5642</td>
+						<td align="right">0.0134</td>
+						<td align="right">0.4085</td>
+						<td align="right">0.3161</td>
+						<td align="right">0.4059</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 50%</td>
-						<td align="right">0.957</td>
-						<td align="right">0.701</td>
-						<td align="right">0.573</td>
-						<td align="right">0</td>
-						<td align="right">0.268</td>
-						<td align="right">0</td>
-						<td align="right">0.417</td>
+						<td>200% synthetic </td>
+						<td align="right">0.5322</td>
+						<td align="right">0.6956</td>
+						<td align="right">0.5636</td>
+						<td align="right">0.0125</td>
+						<td align="right">0.3677</td>
+						<td align="right">0.3288</td>
+						<td align="right">0.4167</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 75%</td>
-						<td align="right">0.968</td>
-						<td align="right">0.575</td>
-						<td align="right">0.543</td>
-						<td align="right">0</td>
-						<td align="right">0.309</td>
-						<td align="right">0.01</td>
-						<td align="right">0.401</td>
+						<td>300% synthetic</td>
+						<td align="right">0.2432</td>
+						<td align="right">0.7402</td>
+						<td align="right">0.5479</td>
+						<td align="right">0.0157</td>
+						<td align="right">0.3316</td>
+						<td align="right">0.2878</td>
+						<td align="right">0.3611</td>
 					</tr>
 					<tr>
-						<td>1000 images, mix rate 100%</td>
-						<td align="right">0.949</td>
-						<td align="right">0.454</td>
-						<td align="right">0.439</td>
-						<td align="right">0</td>
-						<td align="right">0.191</td>
-						<td align="right">0.055</td>
-						<td align="right">0.348</td>
+						<td>100% synthetic (4-channel)</td>
+						<td align="right">0.9100</td>
+						<td align="right">0.7476</td>
+						<td align="right">0.7034</td>
+						<td align="right">0.0177</td>
+						<td align="right">0.4143</td>
+						<td align="right">0.3097</td>
+						<td align="right">0.5171</td>
 					</tr>
 					<tr>
-						<td>2000 images, mix rate 200%</td>
-						<td align="right">0.9</td>
-						<td align="right">0.47</td>
-						<td align="right">0.462</td>
-						<td align="right">0.012</td>
-						<td align="right">0.153</td>
-						<td align="right">0.184</td>
-						<td align="right">0.363</td>
+						<td>100% real (4-channel)</td>
+						<td align="right">0.9676</td>
+						<td align="right">0.8532</td>
+						<td align="right">0.8346</td>
+						<td align="right">0.1456</td>
+						<td align="right">0.5665</td>
+						<td align="right">0.5137</td>
+						<td align="right">0.6469</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<div id='mySwipe' style='max-width:1000px;margin:0 auto' class='swipe'>
+		<p>Since the NIR channel contains a lot of information about water bodies and thus including it might
+			improve the segmentation performance, we also trained two models on 100% real (4-channel) and 100% synthetic
+			(4-channel). The results are also shown above, please refer to our paper for more details. </p>
+		<p> Even with only 10% amount of
+			data, the segmentation model trained on 4-channel synthetic images could reach comparable perfor-
+			mance as the model trained on 3-channel real images.</p>
 
-		</div>
-		<div style='text-align:center;padding-top:20px;'>
-
-			<button class="prev" onclick='mySwipe.prev()'></button>
-			<button class="next" onclick='mySwipe.next()'></button>
-
-		</div>
-
+		<hr>
+		<p>Furthermore, we combine real and synthetic images using different mix-proportions to explore empirically
+			whether or not and how much inclusion of synthetic satellite imagery is a better augmentation strategy in
+			training downstream segmentation models. As shown by the figure below, the model trained with the dataset
+			containing
+			50% synthetic images could reach higher mIoU (0.5834) and hence better segmentation performance, compared
+			to the model trained only with real images (0.5235). </p>
+		<img class="background-image" src="assets/img/synthetic_vs_miou.png" style="max-width: 40%;height:auto;min-width: 10%;min-height: 10%;">
 	</section>
 
 	<section class="reviews">
 		<h3 class="title">Our team</h3>
 		<p class="quote">We are graduate students from Harvard John A. Paulson School of Engineering and Applied
-			Science.</p>
-		<p class="quote">We are proud to be working with Microsoft AI for Good Lab on this project. Their expertise in artificial intelligence and commitment to using technology for social good make them a perfect partner for us.</p>
+			Science. We thank Sarah Rathnam and Weiwei Pan for their help in coordination and communication.</p>
+		<p class="quote">We are proud to be working with Microsoft AI for Good Lab on this project. We
+			thank Caleb Robinson, Simone Fobi Nsutezo, and Anthony Ortiz in the Microsoft AI for Good Research Lab for
+			insightful advice. 
+			Their expertise in
+			artificial intelligence and commitment to using technology for social good make them a perfect partner for
+			us.</p>
 
-		<p class="author"> Sherry(Xinran) Tang</p>
+		<p class="author"> Sherry(Xinran) Tang: 		<a href="xinran_tang@g.harvard.edu">xinran_tang@g.harvard.edu</a></p>
 		<p> SM Student in Applied Computation </p>
-		<a href="xinran_tang@g.harvard.edu">xinran_tang@g.harvard.edu</a>
 
-		<p class="author"> Mengyuan Li</p>
+
+		<p class="author"> Mengyuan Li: 		<a href="mengyuan_li@g.harvard.edu">mengyuan_li@g.harvard.edu</a></p>
 		<p> SM Student in Applied Computation </p>
-		<a href="mengyuan_li@g.harvard.edu">mengyuan_li@g.harvard.edu</a>
 
-		<p class="author"> Chelsea(Zixi) Chen</p>
+
+		<p class="author"> Chelsea(Zixi) Chen: 		<a href="zixichen@g.harvard.edu">zixichen@g.harvard.edu</a></p>
 		<p> SM Student in Applied Computation </p>
-		<a href="zixichen@g.harvard.edu">zixichen@g.harvard.edu</a>
 
-		<p class="author"> Shihan Lin</p>
+		
+		<p class="author"> Van Anh Le: <a href="vananhle@g.harvard.edu ">vananhle@g.harvard.edu </a></p>
 		<p> SM Student in Applied Computation </p>
-		<a href="shihanlin@g.harvard.edu">shihanlin@g.harvard.edu</a>
 
-		<p class="author"> Robert Roessler</p>
-		<p> PhD Student in Harvard German Department </p>
-		<a href="shihanlin@g.harvard.edu">shihanlin@g.harvard.edu</a>
+
+		<p class="author"> Varshini Reddy: 		<a href="varshinibogolu@g.harvard.edu">varshinibogolu@g.harvard.edu</a></p>
+		<p> SM Student in Applied Computation </p>
+
 	</section>
 
 
@@ -594,18 +599,10 @@
 	</section>
 
 	<footer>
-		<p>Harvard AC297R TEAM SATELLITE</p>
+		<p>Label-Conditional Synthetic Satellite Imagery Team</p>
 	</footer>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script src="./assets/script.js"></script>
-	<script src="./assets/swipe.js"></script>
-	<script>
-
-
-		// with jQuery
-		// window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
-
-	</script>
 </body>
 
 </html>
